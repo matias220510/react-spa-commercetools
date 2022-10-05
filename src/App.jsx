@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cart from "./components/cart";
+import cartIcon from "./assets/cart-icon2.png";
 import "./App.scss";
 
 function App() {
@@ -138,10 +139,7 @@ function App() {
         <div className="App">
             <h1>React + Commercetools!</h1>
             <div className="cartContainer">
-                <img
-                    onClick={handleCartClick}
-                    src={"../public/cart-icon2.png"}
-                />
+                <img onClick={handleCartClick} src={cartIcon} />
                 {cart?.totalLineItemQuantity > 0 ? (
                     <div className="quantity">
                         {cart?.totalLineItemQuantity}
