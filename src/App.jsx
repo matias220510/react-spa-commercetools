@@ -5,12 +5,10 @@ import "./App.scss";
 
 function App() {
     const [results, setResults] = useState([]);
-    const [setToken, token] = useState("Qrc48eNeaAETDButZHu1ZjfMrKQg_U7f");
-    const [isValidToken, setIsValidToken] = useState(true);
+    const [token, setToken] = useState(null);
+    const [isValidToken, setIsValidToken] = useState(false);
     const [cart, setCart] = useState(null);
     const [showCart, setShowCart] = useState(false);
-
-    const TOKEN = "GBfG3c-uxDwJKK-Q0_dwzki1z2nnF8IF";
 
     const options = {
         method: "GET",
@@ -18,7 +16,7 @@ function App() {
             Accept: "application/json",
             "Content-Type": "application/json",
             Origin: "",
-            Authorization: "Bearer " + TOKEN,
+            Authorization: "Bearer " + token,
         },
     };
 
@@ -29,24 +27,30 @@ function App() {
             "Content-Type": "application/json",
             Origin: "",
             Authorization:
-                "Basic VUdqUFBQSGs5U2xnWVRzcHdBYjliNGpEOndwLXA2bVREa1JOeklvd2NROUVjcGp2TWhXSUJYaVV3",
-            grant_type: "client_credentials",
+                "Basic " +
+                btoa(
+                    "UGjPPPHk9SlgYTspwAb9b4jD:wp-p6mTDkRNzIowcQ9EcpjvMhWIBXiUw"
+                ),
         },
     };
 
     useEffect(() => {
+        console.log("USE EFFECT", token);
         if (!isValidToken) {
             fetch(
-                "https://UGjPPPHk9SlgYTspwAb9b4jD:wp-p6mTDkRNzIowcQ9EcpjvMhWIBXiUw@auth.us-central1.gcp.commercetools.com/oauth/token",
+                "https://auth.us-central1.gcp.commercetools.com/oauth/token?grant_type=client_credentials",
                 accessTokenOptions
             )
                 .then((response) => response.json())
                 .then((res) => {
-                    // setResults(res.results);
-                    console.log("NEW TOKEN!", res);
+                    if (res.access_token) {
+                        setToken(res.access_token);
+                        setIsValidToken(true);
+                        console.log("NEW TOKEN!", res);
+                    }
                 })
                 .catch((error) => {
-                    console.log(error, "TOKEN ERROR");
+                    console.log("TOKEN ERROR", error);
                 });
         } else {
             fetch(
@@ -56,13 +60,13 @@ function App() {
                 .then((response) => response.json())
                 .then((res) => {
                     setResults(res.results);
-                    console.log("res", res.results);
+                    console.log("RES", res.results);
                 })
                 .catch((error) => {
                     console.log(error, "ERROR");
                 });
         }
-    }, []);
+    }, [token]);
 
     const getCart = async () => {
         if (cart) {
@@ -78,7 +82,7 @@ function App() {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                     Origin: "",
-                    Authorization: "Bearer " + TOKEN,
+                    Authorization: "Bearer " + token,
                 },
                 body: JSON.stringify({
                     currency: "EUR",
@@ -106,7 +110,7 @@ function App() {
                     Accept: "application/json",
                     "Content-Type": "application/json",
                     Origin: "",
-                    Authorization: "Bearer " + TOKEN,
+                    Authorization: "Bearer " + token,
                 },
                 body: JSON.stringify({
                     version: temporalCart.version,
