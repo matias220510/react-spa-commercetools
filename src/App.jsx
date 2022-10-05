@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cart from "./components/cart";
-import cartIcon from "./assets/cart-icon2.png";
+import cartIcon from "../public/cart-icon2.png";
 import "./App.scss";
 
 function App() {
