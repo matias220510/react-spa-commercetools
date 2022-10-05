@@ -140,7 +140,7 @@ function App() {
             <div className="cartContainer">
                 <img
                     onClick={handleCartClick}
-                    src={"./src/assets/cart-icon2.png"}
+                    src={"../public/cart-icon2.png"}
                 />
                 {cart?.totalLineItemQuantity > 0 ? (
                     <div className="quantity">
