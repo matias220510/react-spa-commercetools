@@ -71,3 +71,17 @@
         margin-right: 20px;
     }
 }
+
+.buttonsContainer {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+        height: 40px;
+        font-size: 13px;
+
+        &:hover {
+            color: goldenrod;
+        }
+    }
+}

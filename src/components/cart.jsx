@@ -1,11 +1,43 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import StripeCheckout from "react-stripe-checkout";
+import PropTypes from "prop-types";
 import "../App.scss";
 import styles from "./cart.module.scss";
 import CartItem from "./cartItem";
 
-function Cart({ cart, showCart }) {
+function Cart({
+    cart,
+    order,
+    showCart,
+    handleCreateOrder,
+    handleSetShippingAddress,
+    handleCreatePayment,
+    handleAddPaymentInfo,
+    handlePay,
+}) {
     console.log(cart, showCart);
     useEffect(() => {}, []);
+
+    const onToken = async (res) => {
+        console.log("On Token Called!");
+        console.log("RES", res);
+        // const order = await createOrder({
+        //     variables: {
+        //         token: res.id,
+        //     },
+        // }).catch((err) => {
+        //     alert(err.message);
+        // });
+
+        // Router.push({
+        //     pathname: "/order",
+        //     query: { id: order.data.createOrder.id },
+        // });
+    };
+
+    const onClosed = (res) => {
+        console.log("onClosed!", res);
+    };
 
     return (
         <div
@@ -23,9 +55,45 @@ function Cart({ cart, showCart }) {
             </div>
 
             {cart?.lineItems ? (
-                cart?.lineItems?.map((lineItem) => (
-                    <CartItem lineItem={lineItem} />
-                ))
+                <div>
+                    {cart?.lineItems?.map((lineItem) => (
+                        <CartItem lineItem={lineItem} />
+                    ))}
+                    <div className={styles.buttonsContainer}>
+                        <button
+                            onClick={handleSetShippingAddress}
+                            className={styles.createOrder}
+                        >
+                            Set Shipping address
+                        </button>
+                        <button
+                            onClick={handleCreateOrder}
+                            className={styles.createOrder}
+                        >
+                            Create Order
+                        </button>
+                        <button
+                            onClick={handleCreatePayment}
+                            className={styles.createOrder}
+                        >
+                            Create Payment
+                        </button>
+                        <button
+                            onClick={handleAddPaymentInfo}
+                            className={styles.createOrder}
+                        >
+                            ADD PAYMENT INFO
+                        </button>
+
+                        {order ? (
+                            <button onClick={handlePay} type="submit">
+                                PAY
+                            </button>
+                        ) : (
+                            ""
+                        )}
+                    </div>
+                </div>
             ) : (
                 <div className={styles.noItems}>NO ITEMS IN YOUR CART</div>
             )}
